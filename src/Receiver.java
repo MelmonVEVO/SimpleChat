@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-//if you're seeing this you're smart
+//if you're seeing this you're smart too
 
 /**
  * Class for the Receiver thread that constantly tries to receive messages from the server.
