@@ -1,7 +1,4 @@
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -62,7 +59,12 @@ public class ChatClient {
         String cca = args[0];
         String ccp = args[1];
         Socket connection = new Socket(cca, Integer.parseInt(ccp));
-        PrintWriter toServer = new PrintWriter(connection.getOutputStream());
+        DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()) {
+            @Override
+            public void write(int b) throws IOException {
+
+            }
+        };
         Receiver receiver = new Receiver(cca, ccp);
         receiver.start();
         System.out.println("Ready for messages.");
@@ -70,7 +72,7 @@ public class ChatClient {
         while (true) {
             String toSend = client.getMessage();
             if (!toSend.equals("#DONOTSEND")) { // Message will parse if it's not equal to #DONOTSEND
-                toServer.printf("%s\n", toSend);
+                toServer.writeChars(toSend + "\n");
             }
         }
     }
