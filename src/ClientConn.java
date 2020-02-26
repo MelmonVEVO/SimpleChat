@@ -1,22 +1,24 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Class for handling multiple client connections
  */
 class ClientConn extends Thread {
     private final Socket connection;
-    private BlockingQueue<String> messages;
+    private ArrayBlockingQueue<String> messages;
 
-    ClientConn(Socket s, BlockingQueue<String> b) {
+    ClientConn(Socket s, ArrayBlockingQueue<String> b) {
         this.connection = s;
         this.messages = b;
     }
 
     void sendToClient(String msg) throws IOException { // sends message to a client
         DataOutputStream clientWriter = new DataOutputStream(this.connection.getOutputStream());
-        clientWriter.writeChars(msg);
+        clientWriter.writeUTF(msg);
     }
 
     @Override

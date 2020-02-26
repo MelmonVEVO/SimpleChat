@@ -1,7 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import javax.xml.crypto.Data;
+import java.io.*;
 import java.net.Socket;
 import java.time.LocalTime;
 
@@ -51,7 +49,7 @@ public class MatsuriBot {
         String ccp = args[1];
         int port1 = Integer.parseInt(ccp);
         Socket connection = new Socket(cca, port1);
-        PrintWriter toServer = new PrintWriter(connection.getOutputStream());
+        DataOutputStream toServer = new DataOutputStream(connection.getOutputStream());
         BufferedReader collect = new BufferedReader(new InputStreamReader(System.in));
         String serverOutput;
         System.out.println("MatsuriBot running normally~.");
@@ -59,7 +57,7 @@ public class MatsuriBot {
         while (true) {
             try {
                 serverOutput = collect.readLine();
-                toServer.printf("[MatsuriBot] %s\n", analyseMessage(serverOutput));
+                toServer.writeUTF("[MatsuriBot] " + analyseMessage(serverOutput));
             }
             catch (IOException e) {
                 e.printStackTrace();

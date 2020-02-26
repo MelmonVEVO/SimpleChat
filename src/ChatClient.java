@@ -67,7 +67,7 @@ public class ChatClient {
         while (true) {
             String toSend = client.getMessage();
             if (!toSend.equals("#DONOTSEND")) { // Message will parse if it's not equal to #DONOTSEND
-                toServer.writeChars(toSend + "\n");
+                toServer.writeUTF(toSend + "\n");
             }
         }
     }

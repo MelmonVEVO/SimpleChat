@@ -2,14 +2,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Server class for the chat system.
  */
 public class ChatServer {
     private ArrayList<ClientConn> clients = new ArrayList<>();
-    private BlockingQueue<String> messages;
+    private ArrayBlockingQueue<String> messages = new ArrayBlockingQueue<>(99);
 
     private void broadcast(String msg) throws IOException {
         for (int x = 0; x < this.clients.size()-1; x++) {
@@ -27,7 +29,7 @@ public class ChatServer {
         catch (IOException e) {
             serverConnections = new ServerSocket(14001);
         }
-        
+        System.out.println("IT WORKS");
         //noinspection InfiniteLoopStatement
         while (true) {
             try {
