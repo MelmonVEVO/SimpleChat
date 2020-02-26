@@ -59,12 +59,7 @@ public class ChatClient {
         String cca = args[0];
         String ccp = args[1];
         Socket connection = new Socket(cca, Integer.parseInt(ccp));
-        DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()) {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-        };
+        DataOutputStream toServer = new DataOutputStream(connection.getOutputStream());
         Receiver receiver = new Receiver(cca, ccp);
         receiver.start();
         System.out.println("Ready for messages.");
