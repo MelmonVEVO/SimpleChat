@@ -34,19 +34,17 @@ class Receiver extends Thread {
      */
     @Override
     public void run() {
-        BufferedReader collect = null;
+        BufferedReader serverReader = null;
         try {
-            collect = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
+            serverReader = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
         }
-
         String serverOutput;
-        //noinspection InfiniteLoopStatement
         while (true) {
             try {
-                serverOutput = collect.readLine();
+                serverOutput = serverReader.readLine();
                 System.out.println(serverOutput);
             }
             catch (IOException ignored) {}

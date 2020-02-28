@@ -18,8 +18,8 @@ public class ChatServer {
      *
      * @param msg The message itself
      */
-    private void broadcast(String msg) throws IOException {
-        for (int x = 0; x < this.clients.size()-1; x++) {
+    private synchronized void broadcast(String msg) throws IOException {
+        for (int x = 0; x < this.clients.size(); x++) {
             this.clients.get(x).sendToClient(msg);
         }
     }
@@ -31,29 +31,27 @@ public class ChatServer {
      */
     public static void main(String[] args) throws IOException {
         ChatServer server = new ChatServer();
-        int csp = Integer.parseInt(args[0]);
-        ServerSocket serverConnections;
+        int csp = Integer.parseInt(args[0]); // port to connect to
+        ServerSocket serverConnections; // making a new server socket for clients to connect to
         try {
             serverConnections = new ServerSocket(csp);
         }
         catch (IOException e) {
             serverConnections = new ServerSocket(14001);
         }
-        System.out.println("IT WORKS");
+        AcceptClient acceptor = new AcceptClient(server.clients, serverConnections, server.messages);
+        acceptor.start();
+        System.out.println("Ready for clients");
         //noinspection InfiniteLoopStatement
         while (true) {
             try {
-                Socket clientConnection = serverConnections.accept();
-                server.clients.add(new ClientConn(clientConnection, server.messages));
-                server.clients.get(server.clients.size() - 1).start(); //starts the newly created thread
-                System.out.println("New connection established: " + clientConnection);
-                String broadcastMessage = server.messages.take();
-                server.broadcast(broadcastMessage);
+                String broadcastMessage = server.messages.poll();
+                //System.out.println(broadcastMessage);
+                if (broadcastMessage != null) {
+                    server.broadcast(broadcastMessage);
+                }
             }
             catch (IOException ignored) {}
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

@@ -4,7 +4,7 @@ import java.net.Socket;
 import java.time.LocalTime;
 
 /**
- * Class for the simple MatsuriBot chatbot.
+ * Class for the MatsuriBot chat bot.
  *
  * @author Dylan Drescher
  */
@@ -23,6 +23,11 @@ public class MatsuriBot {
                     // "Hello! I'm MatsuriBot!"
                     System.out.println("User prompted a /hello");
                     return "Hello! I'm MatsuriBot!";
+
+                case "/wasshoi":
+                    // "Wasshoi!"
+                    System.out.println("User prompted a /wasshoi");
+                    return "Wasshoi!";
 
                 case "/time":
                     // "The current time is %s" [time]
