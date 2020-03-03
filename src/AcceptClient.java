@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * @author Dylan Drescher
  */
-public class AcceptClient extends Thread {
+class AcceptClient extends Thread {
     private LinkedBlockingDeque<ClientConn> clients;
     private ServerSocket serverConnections;
     private LinkedBlockingQueue<String> messages;
