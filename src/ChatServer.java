@@ -45,6 +45,7 @@ public class ChatServer {
                 String broadcastMessage = server.messages.poll();
                 //System.out.println(broadcastMessage);
                 if (broadcastMessage != null) {
+                    System.out.println(broadcastMessage);
                     server.broadcast(broadcastMessage);
                 }
             }

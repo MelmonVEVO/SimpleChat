@@ -50,19 +50,26 @@ public class MatsuriBot {
      * @param args Server address and port
      */
     public static void main(String[] args) throws IOException {
-        String cca = args[0];
-        String ccp = args[1];
-        int port1 = Integer.parseInt(ccp);
-        Socket connection = new Socket(cca, port1);
+        String cca;
+        int ccp;
+        try {
+            cca = args[0]; // The address to connect to
+            ccp = Integer.parseInt(args[1]); // The port to connect to
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            cca = "127.0.0.1"; // default address
+            ccp = 14001; // default port
+        }
+        Socket connection = new Socket(cca, ccp);
         DataOutputStream toServer = new DataOutputStream(connection.getOutputStream());
-        BufferedReader collect = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader serverReader = new BufferedReader(new InputStreamReader(System.in));
         String serverOutput;
         System.out.println("MatsuriBot running normally~.");
         //noinspection InfiniteLoopStatement
         while (true) {
             try {
-                serverOutput = collect.readLine();
-                toServer.writeUTF("[MatsuriBot] " + analyseMessage(serverOutput));
+                serverOutput = serverReader.readLine();
+                toServer.writeBytes("[MatsuriBot] " + analyseMessage(serverOutput) + "\n");
             }
             catch (IOException e) {
                 e.printStackTrace();

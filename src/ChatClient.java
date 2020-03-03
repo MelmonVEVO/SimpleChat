@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Client class for the chat system.
@@ -10,6 +11,13 @@ public class ChatClient {
     private String username;
 
     /**
+     * Constructor
+     */
+    private ChatClient() {
+        username = changeName();
+    }
+
+    /**
      * Gets a message that the user enters.
      *
      * @return Returns the message that the user enters
@@ -17,7 +25,6 @@ public class ChatClient {
     private String getMessage() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String msg = "#DONOTSEND";
-        System.out.print("> ");
         try {
             msg = reader.readLine();
         }
@@ -32,16 +39,15 @@ public class ChatClient {
     /**
      * Sets the username of a particular instance of the client.
      */
-    private void changeName() {
+    private String changeName() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Please enter a username.");
-        System.out.print("> ");
         try {
-            this.username = reader.readLine();
+            return reader.readLine();
         }
         catch (IOException e) {
             System.out.println("Something happened. A boring name will be given to you.");
-            this.username = "Jeff";
+            return "Jeff";
         }
     }
 
@@ -55,7 +61,6 @@ public class ChatClient {
         /*Pound sign commands:
         * #DONOTSEND - client does nothing
         * #QUIT - terminate the client*/
-        client.changeName();
         String cca;
         int ccp;
         try {
@@ -63,19 +68,19 @@ public class ChatClient {
             ccp = Integer.parseInt(args[1]); // The port to connect to
         }
         catch (ArrayIndexOutOfBoundsException e) {
-            cca = "127.0.0.1";
-            ccp = 14001;
+            cca = "127.0.0.1"; // default address
+            ccp = 14001; // default port
         }
         Socket connection = new Socket(cca, ccp);
         DataOutputStream toServer = new DataOutputStream(connection.getOutputStream());
-        Receiver receiver = new Receiver(cca, ccp);
+        Receiver receiver = new Receiver(connection);
         receiver.start();
         System.out.println("Ready for messages.");
         //noinspection InfiniteLoopStatement
         while (true) {
             String toSend = client.getMessage();
             if (!toSend.equals("#DONOTSEND")) { // Message will parse if it's not equal to #DONOTSEND
-                toServer.writeUTF(toSend + "\n");
+                toServer.writeBytes(toSend + "\n");
             }
         }
     }
