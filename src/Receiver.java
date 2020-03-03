@@ -16,7 +16,8 @@ class Receiver extends Thread {
     /**
      * Constructor.
      *
-     * @param client The client socket to use
+     * @param client The client socket to use for receiving messages. This will be the same socket as the client
+     *               which is running the Receiver has
      */
     Receiver(Socket client) {
         this.connection = client;
