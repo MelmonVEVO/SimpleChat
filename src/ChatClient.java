@@ -14,7 +14,7 @@ public class ChatClient {
      * Constructor
      */
     private ChatClient() {
-        username = changeName();
+        this.username = changeName();
     }
 
     /**
