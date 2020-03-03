@@ -1,23 +1,24 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Class for handling multiple client connections
+ * Class for handling a client connection called by the ChatServer.
+ * Constantly reads from the client, and contains a function for sending to the client
  */
 class ClientConn extends Thread {
     private final Socket connection;
-    private ArrayBlockingQueue<String> messages;
+    private LinkedBlockingQueue<String> messages;
 
     /**
      * Sets the connection and messages for the individual client connection
      *
-     * @param s The client socket
-     * @param b The messages queue
+     * @param conn The client socket
+     * @param msgs The messages queue
      */
-    ClientConn(Socket s, ArrayBlockingQueue<String> b) {
-        this.connection = s;
-        this.messages = b;
+    ClientConn(Socket conn, LinkedBlockingQueue<String> msgs) {
+        this.connection = conn;
+        this.messages = msgs;
     }
 
     /**
@@ -28,7 +29,7 @@ class ClientConn extends Thread {
     void sendToClient(String msg) throws IOException { // sends message to a client
         DataOutputStream toClient = new DataOutputStream(this.connection.getOutputStream());
         try {
-            toClient.writeUTF(msg);
+            toClient.writeBytes(msg + "\n");
         } catch (NullPointerException e) {
             System.out.printf("Should print %s", msg);
             e.printStackTrace();
@@ -46,7 +47,6 @@ class ClientConn extends Thread {
             //noinspection InfiniteLoopStatement
             while (true) {
                 clientOutput = clientReader.readLine();
-                //System.out.println(clientOutput);
                 this.messages.add(clientOutput);
             }
 

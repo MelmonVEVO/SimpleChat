@@ -4,68 +4,76 @@ import java.net.Socket;
 import java.time.LocalTime;
 
 /**
- * Class for the MatsuriBot chat bot.
+ * Class for the MatsuriBot chat bot. Uses the command prefix "/"
  *
  * @author Dylan Drescher
  */
 public class MatsuriBot {
+    Socket connection;
 
+    MatsuriBot(String cca, int ccp) throws IOException {
+        this.connection = new Socket(cca, ccp); // Server socket to connect to
+    }
     /**
      * Analyses messages that MatsuriBot receives in order to check for commands.
      *
      * @param message The message that was posted to the server
      */
-    private static String analyseMessage(String message) {
+    private void analyseMessage(String message) throws IOException {
+        DataOutputStream toServer = new DataOutputStream(this.connection.getOutputStream());
         String[] parsedMsg = message.split("\\s+");
         if (parsedMsg[1].charAt(0) == '/') {
             switch (parsedMsg[1]) {
                 case "/hello":
-                    // "Hello! I'm MatsuriBot!"
                     System.out.println("User prompted a /hello");
-                    return "Hello! I'm MatsuriBot!";
+                    toServer.writeBytes("[MatsuriBot] Hello! I'm MatsuriBot!\n");
+                    break;
 
                 case "/wasshoi":
-                    // "Wasshoi!"
                     System.out.println("User prompted a /wasshoi");
-                    return "Wasshoi!";
+                    toServer.writeBytes("[MatsuriBot] Wasshoi!\n");
+                    break;
 
                 case "/time":
-                    // "The current time is %s" [time]
                     LocalTime time = LocalTime.now();
                     System.out.println("User prompted a /time");
-                    return "The current time is " + time + ".";
+                    toServer.writeBytes("[MatsuriBot] The current time is " + time + "!\n");
+                    break;
 
                 default:
-                    // "Sorry! I don't know what that means!"
                     System.out.println("User prompted an unknown command");
+                    toServer.writeBytes("[MatsuriBot] Sorry! I don't know what that means!\n");
                     break;
             }
         }
-        return "Sorry! I don't know what that means!";
     }
 
     /**
-     * Method for when MatsuriBot is ran.
+     * Method for when MatsuriBot is run.
      *
      * @param args Server address and port
      */
     public static void main(String[] args) throws IOException {
-        String cca = args[0];
-        String ccp = args[1];
-        int port1 = Integer.parseInt(ccp);
-        Socket connection = new Socket(cca, port1);
-        DataOutputStream toServer = new DataOutputStream(connection.getOutputStream());
-        BufferedReader collect = new BufferedReader(new InputStreamReader(System.in));
-        String serverOutput;
+        String cca;
+        int ccp;
+        try {
+            cca = args[0]; // The address to connect to
+            ccp = Integer.parseInt(args[1]); // The port to connect to
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            cca = "localhost"; // default address
+            ccp = 14001; // default port
+        }
+        MatsuriBot bot = new MatsuriBot(cca, ccp);
+        String serverOutput; // message received from server
         System.out.println("MatsuriBot running normally~.");
+        BufferedReader serverReader = new BufferedReader(new InputStreamReader(bot.connection.getInputStream()));
         //noinspection InfiniteLoopStatement
         while (true) {
-            try {
-                serverOutput = collect.readLine();
-                toServer.writeUTF("[MatsuriBot] " + analyseMessage(serverOutput));
-            }
-            catch (IOException e) {
-                e.printStackTrace();
+            serverOutput = serverReader.readLine();
+            if (serverOutput != null) {
+                System.out.println(serverOutput);
+                bot.analyseMessage(serverOutput);
             }
         }
     }
