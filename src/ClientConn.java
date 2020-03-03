@@ -4,14 +4,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class for handling a client connection called by the ChatServer.
- * Constantly reads from the client, and contains a function for sending to the client
+ * Constantly reads from the client, and contains a function for sending to the client.
+ *
+ * @author Dylan Drescher
  */
 class ClientConn extends Thread {
-    private final Socket connection;
-    private LinkedBlockingQueue<String> messages;
+    private final Socket connection; // Connection socket
+    private LinkedBlockingQueue<String> messages; // Deque of messages that should be broadcasted by the server
 
     /**
-     * Sets the connection and messages for the individual client connection
+     * Sets the connection and messages for the individual client connection.
      *
      * @param conn The client socket
      * @param msgs The messages queue
@@ -22,7 +24,7 @@ class ClientConn extends Thread {
     }
 
     /**
-     * Sends a message to the connected client
+     * Sends a message to the connected client.
      *
      * @param msg The message itself
      */

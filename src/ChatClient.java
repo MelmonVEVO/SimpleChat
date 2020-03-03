@@ -2,7 +2,8 @@ import java.io.*;
 import java.net.Socket;
 
 /**
- * Client class for the chat system.
+ * Client class for the chat system. Sends messages that the user inputs to a server, which it connects to
+ * and receives messages from the connected server.
  *
  * @author Dylan Drescher
  */
@@ -74,7 +75,7 @@ public class ChatClient {
         DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()); // output messages to server
         Receiver receiver = new Receiver(connection); // get messages from server simultaneously
         receiver.start();
-        System.out.println("Ready for messages.");
+        System.out.println("Ready for message input.");
         //noinspection InfiniteLoopStatement
         while (true) {
             String toSend = client.getMessage();

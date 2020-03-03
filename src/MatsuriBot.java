@@ -10,9 +10,16 @@ import java.time.LocalTime;
 public class MatsuriBot {
     Socket connection;
 
+    /**
+     * Constructor.
+     *
+     * @param cca Address to connect to
+     * @param ccp Port to connect to
+     */
     MatsuriBot(String cca, int ccp) throws IOException {
         this.connection = new Socket(cca, ccp); // Server socket to connect to
     }
+
     /**
      * Analyses messages that MatsuriBot receives in order to check for commands.
      *

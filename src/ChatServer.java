@@ -5,13 +5,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Server class for the chat system.
+ *
+ * @author Dylan Drescher
  */
 public class ChatServer {
-    private LinkedBlockingDeque<ClientConn> clients = new LinkedBlockingDeque<>();
-    private LinkedBlockingQueue<String> messages = new LinkedBlockingQueue<>();
+    private LinkedBlockingDeque<ClientConn> clients = new LinkedBlockingDeque<>(); // List of clients connected to server
+    private LinkedBlockingQueue<String> messages = new LinkedBlockingQueue<>(); // Queue of messages to be broadcasted
 
     /**
-     * Broadcasts a gotten message to each connected client
+     * Broadcasts a gotten message to each connected client.
      *
      * @param msg The message itself
      */
@@ -22,7 +24,8 @@ public class ChatServer {
     }
 
     /**
-     * Server running
+     * Server process and running. Opens on port 14001 by default, and starts threads for accepting clients.
+     * Constantly reads messages from the messages queue and broadcasts them.
      *
      * @param args Port number
      */
