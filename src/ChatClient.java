@@ -56,9 +56,17 @@ public class ChatClient {
         * #DONOTSEND - client does nothing
         * #QUIT - terminate the client*/
         client.changeName();
-        String cca = args[0];
-        String ccp = args[1];
-        Socket connection = new Socket(cca, Integer.parseInt(ccp));
+        String cca;
+        int ccp;
+        try {
+            cca = args[0]; // The address to connect to
+            ccp = Integer.parseInt(args[1]); // The port to connect to
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            cca = "127.0.0.1";
+            ccp = 14001;
+        }
+        Socket connection = new Socket(cca, ccp);
         DataOutputStream toServer = new DataOutputStream(connection.getOutputStream());
         Receiver receiver = new Receiver(cca, ccp);
         receiver.start();

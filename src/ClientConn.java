@@ -1,13 +1,13 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Class for handling multiple client connections
+ * Class for handling a client connection called by the ChatServer
  */
 class ClientConn extends Thread {
     private final Socket connection;
-    private ArrayBlockingQueue<String> messages;
+    private LinkedBlockingQueue<String> messages;
 
     /**
      * Sets the connection and messages for the individual client connection
@@ -15,7 +15,7 @@ class ClientConn extends Thread {
      * @param s The client socket
      * @param b The messages queue
      */
-    ClientConn(Socket s, ArrayBlockingQueue<String> b) {
+    ClientConn(Socket s, LinkedBlockingQueue<String> b) {
         this.connection = s;
         this.messages = b;
     }

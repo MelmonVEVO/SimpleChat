@@ -3,10 +3,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-//if you're seeing this you're smart too
-
 /**
- * Class for the Receiver thread that constantly tries to receive messages from the server.
+ * Class for the Receiver thread that is called by the ChatClient that
+ * constantly tries to receive messages from the server.
  *
  * @author Dylan Drescher
  */
@@ -19,10 +18,9 @@ class Receiver extends Thread {
      * @param address Server address
      * @param port Server port
      */
-    Receiver(String address, String port) {
-        int port1 = Integer.parseInt(port);
+    Receiver(String address, int port) {
         try {
-            this.connection = new Socket(address, port1);
+            this.connection = new Socket(address, port);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -42,6 +40,8 @@ class Receiver extends Thread {
             System.exit(0);
         }
         String serverOutput;
+
+        //noinspection InfiniteLoopStatement
         while (true) {
             try {
                 serverOutput = serverReader.readLine();

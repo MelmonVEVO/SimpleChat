@@ -1,17 +1,14 @@
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Server class for the chat system.
  */
 public class ChatServer {
-    private ArrayList<ClientConn> clients = new ArrayList<>();
-    private ArrayBlockingQueue<String> messages = new ArrayBlockingQueue<>(99);
+    private LinkedBlockingDeque<ClientConn> clients = new LinkedBlockingDeque<>();
+    private LinkedBlockingQueue<String> messages = new LinkedBlockingQueue<>();
 
     /**
      * Broadcasts a gotten message to each connected client
@@ -19,8 +16,8 @@ public class ChatServer {
      * @param msg The message itself
      */
     private synchronized void broadcast(String msg) throws IOException {
-        for (int x = 0; x < this.clients.size(); x++) {
-            this.clients.get(x).sendToClient(msg);
+        for (ClientConn client : this.clients) {
+            client.sendToClient(msg);
         }
     }
 
@@ -30,15 +27,15 @@ public class ChatServer {
      * @param args Port number
      */
     public static void main(String[] args) throws IOException {
+        int csp;
         ChatServer server = new ChatServer();
-        int csp = Integer.parseInt(args[0]); // port to connect to
-        ServerSocket serverConnections; // making a new server socket for clients to connect to
         try {
-            serverConnections = new ServerSocket(csp);
+            csp = Integer.parseInt(args[0]); // port to establish to
         }
-        catch (IOException e) {
-            serverConnections = new ServerSocket(14001);
+        catch (ArrayIndexOutOfBoundsException e) {
+            csp = 14001; // default port
         }
+        ServerSocket serverConnections = new ServerSocket(csp); // making a new server socket for clients to connect to
         AcceptClient acceptor = new AcceptClient(server.clients, serverConnections, server.messages);
         acceptor.start();
         System.out.println("Ready for clients");
