@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Class for the Receiver thread that is called by the ChatClient that

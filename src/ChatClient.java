@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Client class for the chat system.
@@ -14,7 +13,7 @@ public class ChatClient {
      * Constructor
      */
     private ChatClient() {
-        username = changeName();
+        this.username = changeName();
     }
 
     /**
