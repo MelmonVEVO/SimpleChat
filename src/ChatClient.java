@@ -38,6 +38,8 @@ public class ChatClient {
 
     /**
      * Sets the username of a particular instance of the client.
+     *
+     * @return The name inputted by the user
      */
     private String changeName() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
