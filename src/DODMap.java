@@ -3,6 +3,8 @@ import java.util.ArrayList;
 
 /**
  * Class for containing the map and its related methods
+ *
+ * Pulled from Dylan Drescher (dgd29, author)'s Dungeon of Doom coursework
  */
 public class DODMap {
 

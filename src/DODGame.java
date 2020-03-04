@@ -2,6 +2,8 @@ import java.util.Random;
 
 /**
  * Contains main game processes
+ *
+ * Pulled and slightly modified from Dylan Drescher (dgd29, author)'s Dungeon of Doom coursework
  */
 public class DODGame {
 
@@ -15,19 +17,17 @@ public class DODGame {
      *
      * @param command : player input command
      */
-    public void processCommand(String command) {
+    public String processCommand(String command) {
         String[] decoded = command.split("\\s+"); // splits command in to list of words for easier parsing
         if (decoded.length == 0) { // in case command inputted was empty
             decoded = new String[]{""};
         }
         switch (decoded[0]) {
             case "HELLO":
-                System.out.printf("Gold to win: %d\n", this.map.getGoldRequirement());
-                break;
+                return "Gold to win: " + this.map.getGoldRequirement();
 
             case "GOLD":
-                System.out.printf("Gold owned: %d\n", this.gold);
-                break;
+                return "Gold owned: " + this.gold;
 
             case "MOVE":
                 try {
@@ -35,60 +35,60 @@ public class DODGame {
                         case "N":
                             if (map.getTile(player.getPos('y') - 1, player.getPos('x')) != '#') {
                                 player.move('N');
+                                return "Moved north!";
                             } else {
-                                System.out.println("Obstruction encountered");
+                                return "Obstruction encountered";
                             }
-                            break;
+
                         case "E":
                             if (map.getTile(player.getPos('y'), player.getPos('x') + 1) != '#') {
                                 player.move('E');
+                                return "Moved east!";
                             } else {
-                                System.out.println("Obstruction encountered");
+                                return "Obstruction encountered";
                             }
-                            break;
+
                         case "S":
                             if (map.getTile(player.getPos('y') + 1, player.getPos('x')) != '#') {
                                 player.move('S');
+                                return "Moved south!";
                             } else {
-                                System.out.println("Obstruction encountered");
+                                return "Obstruction encountered";
                             }
-                            break;
+
                         case "W":
                             if (map.getTile(player.getPos('y'), player.getPos('x') - 1) != '#') {
                                 player.move('W');
+                                return "Moved west!";
                             } else {
-                                System.out.println("Obstruction encountered");
+                                return "Obstruction encountered";
                             }
-                            break;
+
                         default:
-                            System.out.println("Invalid direction");
-                            break;
+                            return "Invalid direction";
+
                     }
                 }
                 catch (IndexOutOfBoundsException x) {
-                    System.out.println("Invalid direction/Obstruction encountered");
+                    return "Invalid direction/Obstruction encountered";
                 }
-                break;
 
             case "PICKUP":
                 if (this.map.grabGold(this.player.getPos('y'), this.player.getPos('x'))) {
                     // if there is gold in the same tile as the plauer
                     this.gold++;
-                    System.out.println("Picked up some gold!");
+                    return "Picked up some gold!";
                 }
                 else {
-                    System.out.println("No gold to pick up...");
+                    return "No gold to pick up...";
                 }
-                break;
 
             case "LOOK":
                 this.map.look(this.player.getPos('y'), this.player.getPos('x'),
                         this.beast.getPos('y'), this.beast.getPos('x'));
-                break;
 
             default:
-                System.out.printf("Unknown command %s\n", decoded[0]);
-                break;
+                return "Unknown command " + decoded[0];
         }
     }
 
@@ -133,7 +133,7 @@ public class DODGame {
      * Prompts the enemy to move around the map using AI. The beast will try to make chase, but if obstructed, will
      * start wandering randomly
      */
-    public void processEnemy() {
+    public String processEnemy() {
         boolean skipRand = false;
         try {
             /* If the beast can see the player, it will start making chase */
@@ -196,10 +196,10 @@ public class DODGame {
                         break;
                 }
             }
-            System.out.println("The beast wanders...");
+            return "The beast wanders...";
         }
         else {
-            System.out.println("The beast makes chase!");
+            return "The beast makes chase!";
         }
     }
 

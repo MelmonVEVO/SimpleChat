@@ -25,7 +25,7 @@ public class MatsuriBot {
      *
      * @param message The message that was posted to the server
      */
-    private void analyseMessage(String message) throws IOException {
+    protected void analyseMessage(String message) throws IOException {
         DataOutputStream toServer = new DataOutputStream(this.connection.getOutputStream());
         String[] parsedMsg = message.split("\\s+");
         if (parsedMsg[1].charAt(0) == '/') {

@@ -1,5 +1,7 @@
 /**
  * Class for containing player information and methods
+ *
+ * Pulled from Dylan Drescher (dgd29, author)'s Dungeon of Doom coursework
  */
 public class DODHumanPlayer {
 
@@ -48,19 +50,15 @@ public class DODHumanPlayer {
         switch (dir) {
             case 'N':
                 this.pos[0]--;
-                System.out.println("Moved north!");
                 break;
             case 'E':
                 this.pos[1]++;
-                System.out.println("Moved east!");
                 break;
             case 'S':
                 this.pos[0]++;
-                System.out.println("Moved south!");
                 break;
             case 'W':
                 this.pos[1]--;
-                System.out.println("Moved west!");
                 break;
         }
     }

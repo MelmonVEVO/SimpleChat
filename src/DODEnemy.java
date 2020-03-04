@@ -1,5 +1,7 @@
 /**
  * Class for containing enemy info and methods
+ *
+ * Pulled and slightly modified from Dylan Drescher (dgd29, author)'s Dungeon of Doom coursework
  */
 public class DODEnemy extends DODHumanPlayer {
 
@@ -8,28 +10,5 @@ public class DODEnemy extends DODHumanPlayer {
      */
     public DODEnemy() {
         super();
-    }
-
-    /**
-     * Moves the enemy in a specific direction without announcing the direction to the player
-     *
-     * @param dir : the direction to move
-     */
-    @Override
-    public void move(char dir) {
-        switch (dir) {
-            case 'N':
-                this.pos[0]--;
-                break;
-            case 'E':
-                this.pos[1]++;
-                break;
-            case 'S':
-                this.pos[0]++;
-                break;
-            case 'W':
-                this.pos[1]--;
-                break;
-        }
     }
 }
