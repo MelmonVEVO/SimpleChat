@@ -38,6 +38,8 @@ public class ChatClient {
 
     /**
      * Sets the username of a particular instance of the client.
+     *
+     * @return The name inputted by the user
      */
     private String changeName() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -56,33 +58,31 @@ public class ChatClient {
      *
      * @param args Server address and port
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ChatClient client = new ChatClient();
         /*Pound sign commands:
         * #DONOTSEND - client does nothing
         * #QUIT - terminate the client*/
-        String cca;
-        int ccp;
+        String csa = AddressPort.getAddressOrPort(args, "-csa"); // getting the address of the server to connect
+        int csp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-csp")); //getting the port
         try {
-            cca = args[0]; // The address to connect to
-            ccp = Integer.parseInt(args[1]); // The port to connect to
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            cca = "localhost"; // default address
-            ccp = 14001; // default port
-        }
-        Socket connection = new Socket(cca, ccp);
-        DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()); // output messages to server
-        Receiver receiver = new Receiver(connection); // get messages from server simultaneously
-        receiver.start();
-        System.out.println("Ready for message input.");
-        //noinspection InfiniteLoopStatement
-        while (true) {
-            String toSend = client.getMessage();
-            if (!toSend.equals("#DONOTSEND")) { // Message will not parse if it's equal to "#DONOTSEND". #DONOTSEND
-                                                // is outputted if an exception occurs, or if the user types it in.
-                toServer.writeBytes(toSend + "\n");
+            Socket connection = new Socket(csa, csp);
+            DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()); // output messages to server
+            Receiver receiver = new Receiver(connection); // get messages from server simultaneously
+            receiver.start();
+            System.out.println("Ready for message input.");
+            //noinspection InfiniteLoopStatement
+            while (true) {
+                String toSend = client.getMessage();
+                if (!toSend.equals("#DONOTSEND")) { // Message will not parse if it's equal to "#DONOTSEND". #DONOTSEND
+                    // is outputted if an exception occurs, or if the user types it in.
+                    toServer.writeBytes(toSend + "\n");
+                }
             }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Couldn't connect to server.");
         }
     }
 }
