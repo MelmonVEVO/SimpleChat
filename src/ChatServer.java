@@ -41,15 +41,12 @@ public class ChatServer {
         System.out.println("Ready for clients");
         //noinspection InfiniteLoopStatement
         while (true) {
-            try {
-                String broadcastMessage = server.messages.poll();
-                //System.out.println(broadcastMessage);
-                if (broadcastMessage != null) {
-                    System.out.println(broadcastMessage);
-                    server.broadcast(broadcastMessage);
-                }
+            String broadcastMessage = server.messages.poll();
+            //System.out.println(broadcastMessage);
+            if (broadcastMessage != null) {
+                System.out.println(broadcastMessage);
+                server.broadcast(broadcastMessage);
             }
-            catch (IOException ignored) {}
         }
     }
 }
