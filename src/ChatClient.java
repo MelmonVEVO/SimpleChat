@@ -58,25 +58,31 @@ public class ChatClient {
      *
      * @param args Server address and port
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ChatClient client = new ChatClient();
         /*Pound sign commands:
         * #DONOTSEND - client does nothing
         * #QUIT - terminate the client*/
         String csa = AddressPort.getAddressOrPort(args, "-csa"); // getting the address of the server to connect
         int csp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-csp")); //getting the port
-        Socket connection = new Socket(csa, csp);
-        DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()); // output messages to server
-        Receiver receiver = new Receiver(connection); // get messages from server simultaneously
-        receiver.start();
-        System.out.println("Ready for message input.");
-        //noinspection InfiniteLoopStatement
-        while (true) {
-            String toSend = client.getMessage();
-            if (!toSend.equals("#DONOTSEND")) { // Message will not parse if it's equal to "#DONOTSEND". #DONOTSEND
-                                                // is outputted if an exception occurs, or if the user types it in.
-                toServer.writeBytes(toSend + "\n");
+        try {
+            Socket connection = new Socket(csa, csp);
+            DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()); // output messages to server
+            Receiver receiver = new Receiver(connection); // get messages from server simultaneously
+            receiver.start();
+            System.out.println("Ready for message input.");
+            //noinspection InfiniteLoopStatement
+            while (true) {
+                String toSend = client.getMessage();
+                if (!toSend.equals("#DONOTSEND")) { // Message will not parse if it's equal to "#DONOTSEND". #DONOTSEND
+                    // is outputted if an exception occurs, or if the user types it in.
+                    toServer.writeBytes(toSend + "\n");
+                }
             }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Couldn't connect to server.");
         }
     }
 }

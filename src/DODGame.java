@@ -17,7 +17,7 @@ public class DODGame {
      *
      * @param name player name that's currently playing
      */
-    DODGame(String name) {
+    DODGame(String name, String mapname) {
         player = new DODHumanPlayer(name);
     }
 
@@ -41,13 +41,13 @@ public class DODGame {
             decoded = new String[]{""};
         }
         switch (decoded[0]) {
-            case "HELLO":
+            case "!hello":
                 return "Gold to win: " + this.map.getGoldRequirement();
 
-            case "GOLD":
+            case "!gold":
                 return "Gold owned: " + this.gold;
 
-            case "MOVE":
+            case "!move":
                 try {
                     switch (decoded[1]) { // checking operand
                         case "N":
@@ -91,7 +91,7 @@ public class DODGame {
                     return "Invalid direction/Obstruction encountered";
                 }
 
-            case "PICKUP":
+            case "!pickup":
                 if (this.map.grabGold(this.player.getPos('y'), this.player.getPos('x'))) {
                     // if there is gold in the same tile as the plauer
                     this.gold++;
@@ -101,7 +101,7 @@ public class DODGame {
                     return "No gold to pick up...";
                 }
 
-            case "LOOK":
+            case "!look":
                 this.map.look(this.player.getPos('y'), this.player.getPos('x'),
                         this.beast.getPos('y'), this.beast.getPos('x'));
 
@@ -236,7 +236,7 @@ public class DODGame {
      *
      * @return : winning result
      */
-    public boolean hasWon() {
+    boolean hasWon() {
         this.player.deactivate();
         return this.map.getGoldRequirement() == this.gold &&
                 this.map.getTile(this.player.getPos('y'), this.player.getPos('x')) == 'E';
