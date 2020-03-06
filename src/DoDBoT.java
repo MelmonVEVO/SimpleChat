@@ -8,13 +8,28 @@ import java.util.ArrayList;
  * @author Dylan Drescher
  */
 public class DoDBoT extends MatsuriBot {
-    ArrayList<DODGame> games = new ArrayList<>(); // This will contain all active games
+    private ArrayList<DODGame> games = new ArrayList<>(); // This will contain all active games
 
     /**
      * Constructor.
      */
-    private DoDBoT(String cca, int ccp) throws IOException {
-        super(cca, ccp);
+    private DoDBoT(String csa, int csp) throws IOException {
+        super(csa, csp);
+    }
+
+    /**
+     * Returns the game that corresponds to a specific player
+     *
+     * @param playerName The playername to get the game from
+     * @return The game itself, or if no game exists, returns null
+     */
+    private DODGame findGame(String playerName) {
+        for (DODGame game : this.games) {
+            if (game.getPlayerName().equals(playerName)) {
+                return game;
+            }
+        }
+        return null;
     }
 
     /**
@@ -26,10 +41,16 @@ public class DoDBoT extends MatsuriBot {
     protected void analyseMessage(String message) throws IOException {
         DataOutputStream toServer = new DataOutputStream(this.connection.getOutputStream());
         String[] parsedMsg = message.split("\\s+");
+        String playerName = parsedMsg[0].substring(1, parsedMsg[0].length()-1); // Gets the player name without the
+                                                                                // square brackets
         if (parsedMsg[1].charAt(0) == '!') {
             if (parsedMsg[1].equals("!begin")) {
-                System.out.println("ye");
+                System.out.println("Player has begin a new game!");
+                this.games.add(new DODGame(playerName));
                 // bot beginning things
+            }
+            else if (parsedMsg[1].equals("!quit")) {
+                // ooeoftyfvtyd
             }
             else {
                 System.out.println("ye2");

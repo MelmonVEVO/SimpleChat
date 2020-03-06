@@ -8,9 +8,27 @@ import java.util.Random;
 public class DODGame {
 
     private DODMap map;
-    private DODHumanPlayer player = new DODHumanPlayer();
+    private DODHumanPlayer player;
     private DODEnemy beast = new DODEnemy();
     private int gold = 0;
+
+    /**
+     * Constructor
+     *
+     * @param name player name that's currently playing
+     */
+    DODGame(String name) {
+        player = new DODHumanPlayer(name);
+    }
+
+    /**
+     * Returns the active player's name
+     *
+     * @return the player's name
+     */
+    String getPlayerName() {
+        return this.player.getPlayerName();
+    }
 
     /**
      * Splits and processes a command
@@ -209,6 +227,7 @@ public class DODGame {
      * @return : if the player has been captured
      */
     public boolean hasBeenCaptured() {
+        this.player.deactivate();
         return player.getPos('x') == beast.getPos('x') && player.getPos('y') == beast.getPos('y');
     }
 
@@ -218,6 +237,7 @@ public class DODGame {
      * @return : winning result
      */
     public boolean hasWon() {
+        this.player.deactivate();
         return this.map.getGoldRequirement() == this.gold &&
                 this.map.getTile(this.player.getPos('y'), this.player.getPos('x')) == 'E';
     }

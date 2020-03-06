@@ -3,15 +3,17 @@
  *
  * Pulled from Dylan Drescher (dgd29, author)'s Dungeon of Doom coursework
  */
-public class DODHumanPlayer {
+class DODHumanPlayer {
 
-    protected int[] pos;
+    private int[] pos;
+    private String playerName;
 
     /**
      * Constructor
      */
-    public DODHumanPlayer() {
+    DODHumanPlayer(String name) {
         this.pos = new int[]{0, 0};
+        this.playerName = name;
     }
 
     /**
@@ -20,7 +22,7 @@ public class DODHumanPlayer {
      * @param which : whether to get the x or the y coordinate
      * @return : position
      */
-    public int getPos(char which) {
+    int getPos(char which) {
         if (which == 'x') {
             return this.pos[1];
         }
@@ -31,12 +33,25 @@ public class DODHumanPlayer {
     }
 
     /**
+     * Gets the active player's name
+     *
+     * @return player name
+     */
+    String getPlayerName() {
+        return this.playerName;
+    }
+
+    void deactivate() {
+        this.playerName = "#DEACTIVATED";
+    }
+
+    /**
      * Changes the position of the character to a specific location
      *
      * @param y : y-coordinate
      * @param x : x-coordinate
      */
-    public void changePos(int y, int x) {
+    void changePos(int y, int x) {
         this.pos[0] = y;
         this.pos[1] = x;
     }
@@ -46,7 +61,7 @@ public class DODHumanPlayer {
      *
      * @param dir : the direction to move
      */
-    public void move(char dir) {
+    void move(char dir) {
         switch (dir) {
             case 'N':
                 this.pos[0]--;

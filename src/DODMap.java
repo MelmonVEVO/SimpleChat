@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * Pulled from Dylan Drescher (dgd29, author)'s Dungeon of Doom coursework
  */
-public class DODMap {
+class DODMap {
 
 	/* Tile help:
 	*  0 = floor tile (things can freely pass through) represented with "."
@@ -26,7 +26,7 @@ public class DODMap {
 	 *
      * @param filename : Name of file to look for a map
      */
-	public DODMap(String filename) {
+	DODMap(String filename) {
 		try {
             BufferedReader buffer = new BufferedReader(new FileReader(new File(filename)));
             // reader based off replies from:
@@ -76,7 +76,7 @@ public class DODMap {
 	 * @param x : x-coordinate
 	 * @return : gotten tile
 	 */
-	public char getTile(int y, int x) {
+	char getTile(int y, int x) {
 		try {
 			return this.map.get(y).get(x);
 		}
@@ -90,7 +90,7 @@ public class DODMap {
      *
      * @return : name
      */
-	public String getName() {
+	String getName() {
 	    return this.name;
     }
 
@@ -99,7 +99,7 @@ public class DODMap {
      *
      * @return : gold requirement
      */
-	public int getGoldRequirement() {
+	int getGoldRequirement() {
 	    return this.goldRequirement;
     }
 
@@ -110,7 +110,7 @@ public class DODMap {
 	 * @param x : x-coordinate
 	 * @return : whether gold has been collected or not
 	 */
-	public boolean grabGold(int y, int x) {
+	boolean grabGold(int y, int x) {
 		if (map.get(y).get(x) == 'G') {
 			ArrayList<Character> newRow = map.get(y);
 			newRow.set(x, '.');
@@ -125,7 +125,7 @@ public class DODMap {
      *
 	 * @return : size
 	 */
-	public int lenCol() {
+	int lenCol() {
 		return this.map.size();
 	}
 
@@ -134,7 +134,7 @@ public class DODMap {
      *
 	 * @return : size
 	 */
-	public int lenRow() {
+	int lenRow() {
 		return this.map.get(0).size();
 	}
 
@@ -146,7 +146,7 @@ public class DODMap {
 	 * @param enemyy : y-coordinate of enemy
 	 * @param enemyx : x-coordinate of enemy
 	 */
-	public void look(int playery, int playerx, int enemyy, int enemyx) {
+	void look(int playery, int playerx, int enemyy, int enemyx) {
 		for (int z = playery - 2; z <= playery+2; z++) { // z is the current observed y
 			for (int w = playerx - 2; w <= playerx+2; w++) { // w is the current observed x
 				if (playery == z && playerx == w) {

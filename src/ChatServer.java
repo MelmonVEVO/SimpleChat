@@ -17,9 +17,12 @@ public class ChatServer {
      *
      * @param msg The message itself
      */
-    private synchronized void broadcast(String msg) throws IOException {
+    private synchronized void broadcast(String msg) {
         for (ClientConn client : this.clients) {
-            client.sendToClient(msg);
+            try {
+                client.sendToClient(msg);
+            }
+            catch (IOException ignored) {}
         }
     }
 
@@ -30,14 +33,8 @@ public class ChatServer {
      * @param args Port number
      */
     public static void main(String[] args) throws IOException {
-        int csp;
+        int csp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-csp"));
         ChatServer server = new ChatServer();
-        try {
-            csp = Integer.parseInt(args[0]); // port to establish to
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            csp = 14001; // default port
-        }
         ServerSocket serverConnections = new ServerSocket(csp); // making a new server socket for clients to connect to
         AcceptClient acceptor = new AcceptClient(server.clients, serverConnections, server.messages);
         acceptor.start();

@@ -63,17 +63,9 @@ public class ChatClient {
         /*Pound sign commands:
         * #DONOTSEND - client does nothing
         * #QUIT - terminate the client*/
-        String cca;
-        int ccp;
-        try {
-            cca = args[0]; // The address to connect to
-            ccp = Integer.parseInt(args[1]); // The port to connect to
-        }
-        catch (ArrayIndexOutOfBoundsException e) {
-            cca = "localhost"; // default address
-            ccp = 14001; // default port
-        }
-        Socket connection = new Socket(cca, ccp);
+        String csa = AddressPort.getAddressOrPort(args, "-csa"); // getting the address of the server to connect
+        int csp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-csp")); //getting the port
+        Socket connection = new Socket(csa, csp);
         DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()); // output messages to server
         Receiver receiver = new Receiver(connection); // get messages from server simultaneously
         receiver.start();
