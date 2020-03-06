@@ -15,8 +15,8 @@ public class DoDBoT extends MatsuriBot {
     /**
      * Constructor.
      */
-    private DoDBoT(String csa, int csp) throws IOException {
-        super(csa, csp);
+    private DoDBoT(String cca, int ccp) throws IOException {
+        super(cca, ccp);
     }
 
     /**
@@ -119,9 +119,9 @@ public class DoDBoT extends MatsuriBot {
     }
 
     public static void main(String[] args) throws IOException {
-        String csa = AddressPort.getAddressOrPort(args, "-csa"); // getting the address of the server to connect
-        int csp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-csp")); //getting the port
-        DoDBoT bot = new DoDBoT(csa, csp);
+        String cca = AddressPort.getAddressOrPort(args, "-cca"); // getting the address of the server to connect
+        int ccp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-ccp")); //getting the port
+        DoDBoT bot = new DoDBoT(cca, ccp);
         String serverOutput; // message received from server
         System.out.println("DoDBoT, ready for adventurers!");
         BufferedReader serverReader = new BufferedReader(new InputStreamReader(bot.connection.getInputStream()));

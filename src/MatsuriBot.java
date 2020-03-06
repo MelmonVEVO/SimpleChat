@@ -13,11 +13,11 @@ public class MatsuriBot {
     /**
      * Constructor.
      *
-     * @param csa Address to connect to
-     * @param csp Port to connect to
+     * @param cca Address to connect to
+     * @param ccp Port to connect to
      */
-    MatsuriBot(String csa, int csp) throws IOException {
-        this.connection = new Socket(csa, csp); // Server socket to connect to
+    MatsuriBot(String cca, int ccp) throws IOException {
+        this.connection = new Socket(cca, ccp); // Server socket to connect to
     }
 
     /**
@@ -60,9 +60,9 @@ public class MatsuriBot {
      * @param args Server address and port
      */
     public static void main(String[] args) throws IOException {
-        String csa = AddressPort.getAddressOrPort(args, "-csa"); // getting the address of the server to connect
-        int csp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-csp")); //getting the port
-        MatsuriBot bot = new MatsuriBot(csa, csp);
+        String cca = AddressPort.getAddressOrPort(args, "-cca"); // getting the address of the server to connect
+        int ccp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-ccp")); //getting the port
+        MatsuriBot bot = new MatsuriBot(cca, ccp);
         String serverOutput; // message received from server
         System.out.println("MatsuriBot running normally~.");
         BufferedReader serverReader = new BufferedReader(new InputStreamReader(bot.connection.getInputStream()));

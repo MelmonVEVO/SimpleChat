@@ -63,10 +63,10 @@ public class ChatClient {
         /*Pound sign commands:
         * #DONOTSEND - client does nothing
         * #QUIT - terminate the client*/
-        String csa = AddressPort.getAddressOrPort(args, "-csa"); // getting the address of the server to connect
-        int csp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-csp")); //getting the port
+        String cca = AddressPort.getAddressOrPort(args, "-cca"); // getting the address of the server to connect
+        int ccp = Integer.parseInt(AddressPort.getAddressOrPort(args, "-ccp")); //getting the port
         try {
-            Socket connection = new Socket(csa, csp);
+            Socket connection = new Socket(cca, ccp);
             DataOutputStream toServer = new DataOutputStream(connection.getOutputStream()); // output messages to server
             Receiver receiver = new Receiver(connection); // get messages from server simultaneously
             receiver.start();

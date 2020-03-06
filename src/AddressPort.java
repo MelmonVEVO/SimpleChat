@@ -10,7 +10,7 @@ class AddressPort {
         catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
-        if (either.equals("-csp")) {
+        if (either.equals("-csp") || either.equals("-ccp")) {
             return "14001";
         }
         else {
