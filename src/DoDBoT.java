@@ -45,9 +45,9 @@ public class DoDBoT extends MatsuriBot {
     protected void analyseMessage(String message) throws IOException {
         DataOutputStream toServer = new DataOutputStream(this.connection.getOutputStream());
         String[] parsedMsg = message.split("\\s+");
-        String playerName = parsedMsg[0].substring(1, parsedMsg[0].length()-1); // Gets the player name without the
-                                                                                // square brackets
-        if (parsedMsg.length > 1) { // ignores one-word messages
+        if (parsedMsg.length > 1) { // ignores one/zero-word messages
+            String playerName = parsedMsg[0].substring(1, parsedMsg[0].length()-1); // Gets the player name without the
+            // square brackets
             if (parsedMsg[1].charAt(0) == '!') {
                 if (parsedMsg[1].equals("!begin")) { // available maps: small, medium, large
                     System.out.println("Player " + playerName + " has begin a new game!");
