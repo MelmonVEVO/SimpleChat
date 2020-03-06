@@ -5,7 +5,7 @@ import java.util.Random;
  *
  * Pulled and slightly modified from Dylan Drescher (dgd29, author)'s Dungeon of Doom coursework
  */
-public class DODGame {
+class DODGame {
 
     private DODMap map;
     private DODHumanPlayer player;
@@ -19,6 +19,7 @@ public class DODGame {
      */
     DODGame(String name, String mapname) {
         player = new DODHumanPlayer(name);
+        createMap(mapname);
     }
 
     /**
@@ -34,79 +35,84 @@ public class DODGame {
      * Splits and processes a command
      *
      * @param command : player input command
+     * @return the message to be sent to the server
      */
-    public String processCommand(String command) {
+    String processCommand(String command) {
         String[] decoded = command.split("\\s+"); // splits command in to list of words for easier parsing
         if (decoded.length == 0) { // in case command inputted was empty
             decoded = new String[]{""};
         }
         switch (decoded[0]) {
             case "!hello":
-                return "Gold to win: " + this.map.getGoldRequirement();
+                return "Gold to win: " + this.map.getGoldRequirement() + "\n";
 
             case "!gold":
-                return "Gold owned: " + this.gold;
+                return "Gold owned: " + this.gold + "\n";
 
             case "!move":
                 try {
                     switch (decoded[1]) { // checking operand
-                        case "N":
+                        case "n":
                             if (map.getTile(player.getPos('y') - 1, player.getPos('x')) != '#') {
                                 player.move('N');
-                                return "Moved north!";
-                            } else {
-                                return "Obstruction encountered";
+                                return "Moved north!\n";
+                            }
+                            else {
+                                return "Obstruction encountered\n";
                             }
 
-                        case "E":
+                        case "e":
                             if (map.getTile(player.getPos('y'), player.getPos('x') + 1) != '#') {
                                 player.move('E');
-                                return "Moved east!";
-                            } else {
-                                return "Obstruction encountered";
+                                return "Moved east!\n";
+                            }
+                            else {
+                                return "Obstruction encountered\n";
                             }
 
-                        case "S":
+                        case "s":
                             if (map.getTile(player.getPos('y') + 1, player.getPos('x')) != '#') {
                                 player.move('S');
-                                return "Moved south!";
-                            } else {
-                                return "Obstruction encountered";
+                                return "Moved south!\n";
+                            }
+                            else {
+                                return "Obstruction encountered\n";
                             }
 
-                        case "W":
+                        case "w":
                             if (map.getTile(player.getPos('y'), player.getPos('x') - 1) != '#') {
                                 player.move('W');
-                                return "Moved west!";
-                            } else {
-                                return "Obstruction encountered";
+                                return "Moved west!\n";
+                            }
+                            else {
+                                return "Obstruction encountered\n";
                             }
 
                         default:
-                            return "Invalid direction";
+                            return "Invalid direction\n";
 
                     }
                 }
                 catch (IndexOutOfBoundsException x) {
-                    return "Invalid direction/Obstruction encountered";
+                    return "Invalid direction/Obstruction encountered\n";
                 }
 
             case "!pickup":
                 if (this.map.grabGold(this.player.getPos('y'), this.player.getPos('x'))) {
-                    // if there is gold in the same tile as the plauer
+                    // if there is gold in the same tile as the player
                     this.gold++;
-                    return "Picked up some gold!";
+                    return "Picked up some gold!\n";
                 }
                 else {
-                    return "No gold to pick up...";
+                    return "No gold to pick up...\n";
                 }
 
             case "!look":
-                this.map.look(this.player.getPos('y'), this.player.getPos('x'),
+                return this.map.look(this.player.getPos('y'), this.player.getPos('x'),
                         this.beast.getPos('y'), this.beast.getPos('x'));
 
             default:
-                return "Unknown command " + decoded[0];
+                return "Unknown command " + decoded[0] + "\n";
         }
     }
 
@@ -115,7 +121,7 @@ public class DODGame {
      *
      * @param filename : filename of the map the game should load
      */
-    public void createMap(String filename) {
+    private void createMap(String filename) {
         this.map = new DODMap(filename);
         boolean placed = false; // this is for checking whether the player or enemy has been placed in a valid place
         Random rand = new Random();
@@ -143,7 +149,7 @@ public class DODGame {
      *
      * @return : name of the map
      */
-    public String getMapName() {
+    String getMapName() {
         return this.map.getName();
     }
 
@@ -151,7 +157,7 @@ public class DODGame {
      * Prompts the enemy to move around the map using AI. The beast will try to make chase, but if obstructed, will
      * start wandering randomly
      */
-    public String processEnemy() {
+    String processEnemy() {
         boolean skipRand = false;
         try {
             /* If the beast can see the player, it will start making chase */
@@ -194,18 +200,21 @@ public class DODGame {
                         }
                         moved = true;
                         break;
+
                     case 1: //east
                         if (this.map.getTile(this.beast.getPos('y'), this.beast.getPos('x') + 1) != '#') {
                             this.beast.move('E');
                         }
                         moved = true;
                         break;
+
                     case 2: //south
                         if (this.map.getTile(this.beast.getPos('y') + 1, this.beast.getPos('x')) != '#') {
                             this.beast.move('S');
                         }
                         moved = true;
                         break;
+
                     case 3: //west
                         if (this.map.getTile(this.beast.getPos('y'), this.beast.getPos('x') - 1) != '#') {
                             this.beast.move('W');
@@ -226,8 +235,7 @@ public class DODGame {
      *
      * @return : if the player has been captured
      */
-    public boolean hasBeenCaptured() {
-        this.player.deactivate();
+    boolean hasBeenCaptured() {
         return player.getPos('x') == beast.getPos('x') && player.getPos('y') == beast.getPos('y');
     }
 
@@ -237,8 +245,14 @@ public class DODGame {
      * @return : winning result
      */
     boolean hasWon() {
-        this.player.deactivate();
         return this.map.getGoldRequirement() == this.gold &&
                 this.map.getTile(this.player.getPos('y'), this.player.getPos('x')) == 'E';
+    }
+
+    /**
+     * Deactivates the player
+     */
+    void deactivate() {
+        this.player.deactivate();
     }
 }

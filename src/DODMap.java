@@ -65,7 +65,7 @@ class DODMap {
 		catch (FileNotFoundException x) { // when a file is not found
 			// System.out.println(new File(".").getAbsoluteFile());
 			System.out.println("File not found!");
-			this.name = "FILENOTFOUND";
+			this.name = "#FILENOTFOUND";
 		}
 	}
 
@@ -146,21 +146,24 @@ class DODMap {
 	 * @param enemyy : y-coordinate of enemy
 	 * @param enemyx : x-coordinate of enemy
 	 */
-	void look(int playery, int playerx, int enemyy, int enemyx) {
+	String look(int playery, int playerx, int enemyy, int enemyx) {
+		StringBuilder out = new StringBuilder();
+		out.append("Here's what you see:\n");
 		for (int z = playery - 2; z <= playery+2; z++) { // z is the current observed y
 			for (int w = playerx - 2; w <= playerx+2; w++) { // w is the current observed x
 				if (playery == z && playerx == w) {
-					System.out.print("P");
+					out.append("P");
 				}
 				else if (enemyy == z && enemyx == w) {
-					System.out.print("B");
+					out.append("B");
 				}
 				else {
-					System.out.printf("%c", getTile(z, w));
+					out.append(getTile(z, w));
 				}
 			}
-			System.out.print("\n");
+			out.append("\n");
 		}
+		return out.toString();
 	}
 
 }
